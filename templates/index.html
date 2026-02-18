@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hemadri Chatbot Educational - Your Smart AI Learning Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar / Navigation Overlay -->
+        <div class="theme-toggle" id="theme-toggle">
+            <i class="fas fa-moon"></i>
+        </div>
+
+        <!-- Left Side: AI Chatbot Interface -->
+        <section class="chat-section">
+            <div class="chat-header">
+                <div class="bot-info">
+                    <div class="avatar-placeholder"><i class="fas fa-robot"></i></div>
+                    <div class="bot-status">
+                        <h2>Hemadri AI</h2>
+                        <span class="status-online">Online</span>
+                    </div>
+                </div>
+                <div class="chat-actions">
+                    <button id="clear-chat" title="Clear Chat"><i class="fas fa-trash-alt"></i></button>
+                    <button id="export-chat" title="Export as PDF"><i class="fas fa-file-pdf"></i></button>
+                </div>
+            </div>
+
+            <div class="chat-history" id="chat-history">
+                <!-- Welcome Message -->
+                <div class="message bot">
+                    <div class="message-content">
+                        Hello! I am Hemadri, your Smart AI Learning Assistant. How can I help you with your studies or
+                        career today?
+                    </div>
+                    <span class="timestamp">Just now</span>
+                </div>
+            </div>
+
+            <div class="chat-input-container">
+                <div class="typing-indicator" id="typing-indicator">
+                    <span></span><span></span><span></span> Hemadri is thinking...
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="user-input" placeholder="Type your educational query here..."
+                        autocomplete="off">
+                    <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Side: Info & Auth Section -->
+        <section class="info-section scrollable" id="info-section">
+            <!-- Header Content (Logo/Title) -->
+            <div class="hero-content">
+                <h1 class="gradient-text">Hemadri Chatbot Educational</h1>
+                <p class="tagline">Your Smart AI Learning Assistant</p>
+            </div>
+
+            <!-- Auth Section -->
+            <div class="auth-wrapper" id="auth-wrapper">
+                <!-- Login Form -->
+                <div id="login-form" class="auth-card">
+                    <h3>Welcome Back</h3>
+                    <p>Login to access your personalized learning journey.</p>
+                    <form id="login-form-element">
+                        <div class="input-group">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="login-email" placeholder="Email Address" required>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="login-password" placeholder="Password" required>
+                        </div>
+                        <div class="form-options">
+                            <label><input type="checkbox" id="remember-me"> Remember Me</label>
+                            <a href="#">Forgot Password?</a>
+                        </div>
+                        <button type="submit" class="btn-primary">Login</button>
+                    </form>
+                    <p class="auth-footer">Don't have an account? <span id="show-register">Register</span></p>
+                </div>
+
+                <!-- Register Form (Hidden by default) -->
+                <div id="register-form" class="auth-card hidden">
+                    <h3>Join Hemadri</h3>
+                    <p>Create an account to start your smart learning experience.</p>
+                    <form id="register-form-element">
+                        <div class="input-group">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="reg-name" placeholder="Full Name" required>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="reg-email" placeholder="Email Address" required>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="reg-password" placeholder="Password" required>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-check-double"></i>
+                            <input type="password" id="reg-confirm-password" placeholder="Confirm Password" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Register</button>
+                    </form>
+                    <p class="auth-footer">Already have an account? <span id="show-login">Login</span></p>
+                </div>
+
+                <!-- Profile Info (Hidden until logged in) -->
+                <div id="profile-info" class="auth-card hidden">
+                    <h3>Dashboard</h3>
+                    <p id="user-display-name">Welcome!</p>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <i class="fas fa-comment-dots"></i>
+                            <span>Chats Today</span>
+                            <strong id="chat-count">0</strong>
+                        </div>
+                    </div>
+                    <button id="logout-btn" class="btn-secondary">Logout</button>
+                </div>
+            </div>
+
+            <!-- About Section -->
+            <div class="about-section">
+                <h2><i class="fas fa-graduation-cap"></i> About the Platform</h2>
+                <p>Hemadri Chatbot Educational is an AI-powered educational assistant designed to support students,
+                    learners, and job seekers in their academic and career journeys.</p>
+
+                <div class="help-grid">
+                    <div class="help-item"><i class="fas fa-code"></i> Programming</div>
+                    <div class="help-item"><i class="fas fa-book-open"></i> Academic Doubts</div>
+                    <div class="help-item"><i class="fas fa-user-tie"></i> Interview Prep</div>
+                    <div class="help-item"><i class="fas fa-briefcase"></i> Career Advice</div>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="features-section">
+                <h2><i class="fas fa-star"></i> Core Features</h2>
+                <ul class="feature-list">
+                    <li><i class="fas fa-robot"></i> AI Powered Conversations</li>
+                    <li><i class="fas fa-brain"></i> Academic Doubt Solving</li>
+                    <li><i class="fas fa-laptop-code"></i> Programming Help (Java, Python, JS)</li>
+                    <li><i class="fas fa-file-invoice"></i> Resume & Career Support</li>
+                    <li><i class="fas fa-history"></i> Save Chat History</li>
+                    <li><i class="fas fa-file-pdf"></i> Export Chat as PDF</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>

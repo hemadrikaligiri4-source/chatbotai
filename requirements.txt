@@ -1,0 +1,9 @@
+Flask
+Flask-Bcrypt
+Flask-Login
+Flask-CORS
+Flask-SQLAlchemy
+Flask-Mail
+itsdangerous
+requests
+gunicorn
