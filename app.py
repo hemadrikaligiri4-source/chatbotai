@@ -72,11 +72,17 @@ def register():
     msg.body = f'Hi {full_name},\n\nThank you for joining Hemadri Chatbot Educational! Please click the link below to verify your email address:\n\n{link}\n\nHappy Learning!'
     
     try:
+        # Check if auto-verification is enabled for testing
+        if os.environ.get('AUTO_VERIFY') == 'true':
+            new_user.is_verified = True
+            db.session.commit()
+            return jsonify({"message": "User registered and automatically verified (Debug Mode). You can now login."}), 201
+        
         mail.send(msg)
         return jsonify({"message": "User registered successfully. Please check your email to verify your account."}), 201
     except Exception as e:
-        print(f"Error sending email: {e}")
-        return jsonify({"message": "User registered, but failed to send verification email. Please contact support."}), 201
+        print(f"Error sending email or auto-verifying: {e}")
+        return jsonify({"message": "User registered, but failed to send verification email. (Error: " + str(e) + ")"}), 201
 
 @app.route('/verify-email/<token>')
 def verify_email(token):
@@ -199,6 +205,19 @@ def generate_mock_response(message):
     except Exception as e:
         print(f"Critical Error calling OpenRouter: {e}")
         return "Oops! Something went wrong while connecting to my AI brain. Please check your connection."
+
+@app.route('/debug/status', methods=['GET'])
+def debug_status():
+    try:
+        user_count = User.query.count()
+        return jsonify({
+            "status": "online",
+            "database": "connected",
+            "user_count": user_count,
+            "db_uri": app.config['SQLALCHEMY_DATABASE_URI'].split('@')[-1] # Hide credentials
+        })
+    except Exception as e:
+        return jsonify({"status": "error", "error": str(e)}), 500
 
 @app.route('/')
 def index():
