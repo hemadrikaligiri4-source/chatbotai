@@ -1,0 +1,15 @@
+.git
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.db
+.sqlite
+.env
+instance/
+.pytest_cache
+*.log
+api_output.txt
+free_models_list.txt
+venv/
+env/

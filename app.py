@@ -9,8 +9,13 @@ from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.urandom(24)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hemadri.db'
+# Use a static secret key from environment or generate a random one for local development
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', os.urandom(24))
+# Support for Render Postgres (DATABASE_URL) or fallback to local SQLite
+database_url = os.environ.get('DATABASE_URL')
+if database_url and database_url.startswith("postgres://"):
+    database_url = database_url.replace("postgres://", "postgresql://", 1)
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url or 'sqlite:///hemadri.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Email Configuration
@@ -141,7 +146,7 @@ def clear_chat():
 import requests
 import json
 
-OPENROUTER_API_KEY = "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"
+OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "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")
 
 def generate_mock_response(message):
     try:

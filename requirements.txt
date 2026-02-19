@@ -7,3 +7,4 @@ Flask-Mail
 itsdangerous
 requests
 gunicorn
+psycopg2-binary
