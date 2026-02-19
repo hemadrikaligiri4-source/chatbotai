@@ -49,13 +49,21 @@ def register():
     email = data.get('email')
     password = data.get('password')
 
+    if not all([full_name, email, password]):
+        return jsonify({"error": "Missing required fields"}), 400
+
     if User.query.filter_by(email=email).first():
+        print(f"Registration failed: Email {email} already exists")
         return jsonify({"error": "Email already exists"}), 400
 
-    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-    new_user = User(full_name=full_name, email=email, password=hashed_password, is_verified=False)
-    db.session.add(new_user)
-    db.session.commit()
+    try:
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        new_user = User(full_name=full_name, email=email, password=hashed_password, is_verified=False)
+        db.session.add(new_user)
+        db.session.commit()
+    except Exception as e:
+        print(f"Database error during registration: {e}")
+        return jsonify({"error": "Database error occurred. Please try again."}), 500
 
     # Send verification email
     token = s.dumps(email, salt='email-confirm')
@@ -95,11 +103,14 @@ def login():
     user = User.query.filter_by(email=email).first()
     if user and bcrypt.check_password_hash(user.password, password):
         if not user.is_verified:
+            print(f"Login attempt for unverified email: {email}")
             return jsonify({"error": "Please verify your email before logging in."}), 403
         
         login_user(user, remember=remember)
+        print(f"User logged in: {email}")
         return jsonify({"message": "Logged in successfully", "user": {"full_name": user.full_name, "email": user.email}}), 200
     
+    print(f"Login failed for email: {email}")
     return jsonify({"error": "Invalid email or password"}), 401
 
 @app.route('/logout', methods=['POST'])
