@@ -64,10 +64,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert(data.message);
                 showLogin.click();
             } else {
-                alert(data.error);
+                alert(data.error || "Registration failed. Please try again.");
             }
         } catch (err) {
             console.error(err);
+            alert("Registration failed. Please check your internet connection or try again later.");
         }
     });
 
@@ -89,10 +90,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateAuthUI();
                 loadChatHistory();
             } else {
-                alert(data.error);
+                alert(data.error || "Login failed. Please try again.");
             }
         } catch (err) {
             console.error(err);
+            alert("Login failed. Please check your internet connection or try again later.");
         }
     });
 
