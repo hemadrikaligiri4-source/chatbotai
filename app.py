@@ -219,6 +219,17 @@ def debug_status():
     except Exception as e:
         return jsonify({"status": "error", "error": str(e)}), 500
 
+@app.route('/debug/verify_all', methods=['GET'])
+def verify_all_users():
+    try:
+        users = User.query.filter_by(is_verified=False).all()
+        for user in users:
+            user.is_verified = True
+        db.session.commit()
+        return jsonify({"message": f"Successfully verified {len(users)} users!"})
+    except Exception as e:
+        return jsonify({"status": "error", "error": str(e)}), 500
+
 @app.route('/')
 def index():
     return render_template('index.html')
